@@ -1,25 +1,25 @@
-﻿namespace Lab_1
+﻿using Microsoft.Maui.Controls;
+using Lab_1.ViewModels;
+
+namespace Lab_1
 {
+    [QueryProperty(nameof(NoteId), "noteId")]
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        private NoteViewModel _viewModel;
+
+        public int NoteId { get; set; }
 
         public MainPage()
         {
             InitializeComponent();
+            _viewModel = (NoteViewModel)BindingContext;
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        protected override async void OnAppearing()
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            base.OnAppearing();
+            await _viewModel.LoadNoteAsync(NoteId);
         }
     }
-
 }

@@ -1,0 +1,97 @@
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using Microsoft.Maui.Controls;
+using Lab_1.Models;
+using Lab_1.Services;
+using System.IO;
+using System;
+using System.Threading.Tasks;
+
+namespace Lab_1.ViewModels
+{
+    public class NoteViewModel : INotifyPropertyChanged
+    {
+        private NotesDatabase _database;
+        private Note _selectedNote;
+
+        public ObservableCollection<Note> Notes { get; set; }
+        public Note SelectedNote
+        {
+            get => _selectedNote;
+            set
+            {
+                if (_selectedNote != value)
+                {
+                    _selectedNote = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public ICommand AddNoteCommand { get; }
+        public ICommand DeleteNoteCommand { get; }
+        public ICommand SaveNoteCommand { get; }
+
+        public NoteViewModel()
+        {
+            _database = new NotesDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Notes.db3"));
+            Notes = new ObservableCollection<Note>();
+            LoadNotes();
+
+            AddNoteCommand = new Command(AddNote);
+            DeleteNoteCommand = new Command(DeleteNote);
+            SaveNoteCommand = new Command(SaveNote);
+        }
+
+        private async void LoadNotes()
+        {
+            var notes = await _database.GetNotesAsync();
+            foreach (var note in notes)
+            {
+                Notes.Add(note);
+            }
+        }
+
+        public async Task LoadNoteAsync(int noteId)
+        {
+            SelectedNote = await _database.GetNoteAsync(noteId);
+        }
+
+        private void AddNote()
+        {
+            var newNote = new Note { Title = "New Note", Content = "Note content" };
+            Notes.Add(newNote);
+            SelectedNote = newNote;
+        }
+
+        private async void DeleteNote()
+        {
+            if (SelectedNote != null)
+            {
+                await _database.DeleteNoteAsync(SelectedNote);
+                Notes.Remove(SelectedNote);
+                SelectedNote = null;
+            }
+        }
+
+        private async void SaveNote()
+        {
+            if (SelectedNote != null)
+            {
+                await _database.SaveNoteAsync(SelectedNote);
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (propertyName == nameof(SelectedNote))
+            {
+                SaveNote();
+            }
+        }
+    }
+}
