@@ -48,5 +48,10 @@ namespace Lab_1
                 }
             }
         }
+        private async void OnImportButtonClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("importpage");
+        }
+
     }
 }

@@ -61,6 +61,12 @@ namespace Lab_1.ViewModels
             SelectedNote = await _database.GetNoteAsync(noteId);
         }
 
+        public void AddNote(Note existingNote)
+        {
+            Notes.Add(existingNote);
+            SelectedNote = existingNote;
+        }
+
         private void AddNote()
         {
             var newNote = new Note { Title = "New Note", Content = "Note content" };

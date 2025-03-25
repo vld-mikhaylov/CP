@@ -21,6 +21,7 @@
         <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalOptions="End">
             <Button Text="Add Note" Command="{Binding AddNoteCommand}" />
             <Button Text="Delete" Clicked="OnDeleteButtonClicked" x:Name="DeleteButton" />
+            <Button Text="Import" Clicked="OnImportButtonClicked" />
         </StackLayout>
 
         <ScrollView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">

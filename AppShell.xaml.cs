@@ -1,5 +1,4 @@
 ﻿using Microsoft.Maui.Controls;
-using Lab_1.Models;
 
 namespace Lab_1
 {
@@ -8,8 +7,9 @@ namespace Lab_1
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute("viewpage", typeof(ViewPage)); // Ensure MainPage is the correct page type
-            Routing.RegisterRoute("allnotes", typeof(AllNotes)); // Register AllNotes route
+            Routing.RegisterRoute("viewpage", typeof(ViewPage));
+            Routing.RegisterRoute("allnotes", typeof(AllNotes));
+            Routing.RegisterRoute("importpage", typeof(ImportPage)); // Register ImportPage route
         }
     }
 }
