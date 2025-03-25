@@ -9,21 +9,12 @@
         <viewmodels:NoteViewModel />
     </Shell.BindingContext>
 
-    <FlyoutItem Title="Create Note">
-        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
-    </FlyoutItem>
-
-    <FlyoutItem Title="All Notes">
+    <FlyoutItem Title="All Notes" FlyoutDisplayOptions="AsSingleItem">
         <ShellContent>
-            <ContentPage>
-                <CollectionView ItemsSource="{Binding Notes}" SelectionMode="Single" SelectionChanged="OnNoteSelected">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <TextCell Text="{Binding Title}"/>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </ContentPage>
+            <local:AllNotes />
         </ShellContent>
     </FlyoutItem>
+
+    <!-- Register EditPage route -->
+    <ShellContent Route="ViewPage" ContentTemplate="{DataTemplate local:ViewPage}" />
 </Shell>

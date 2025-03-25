@@ -33,6 +33,7 @@ namespace Lab_1.ViewModels
         public ICommand AddNoteCommand { get; }
         public ICommand DeleteNoteCommand { get; }
         public ICommand SaveNoteCommand { get; }
+        public ICommand EditNoteCommand { get; }
 
         public NoteViewModel()
         {
@@ -48,6 +49,7 @@ namespace Lab_1.ViewModels
         private async void LoadNotes()
         {
             var notes = await _database.GetNotesAsync();
+            Notes.Clear();
             foreach (var note in notes)
             {
                 Notes.Add(note);
@@ -64,6 +66,7 @@ namespace Lab_1.ViewModels
             var newNote = new Note { Title = "New Note", Content = "Note content" };
             Notes.Add(newNote);
             SelectedNote = newNote;
+            SaveNotes();
         }
 
         private async void DeleteNote()
@@ -73,6 +76,7 @@ namespace Lab_1.ViewModels
                 await _database.DeleteNoteAsync(SelectedNote);
                 Notes.Remove(SelectedNote);
                 SelectedNote = null;
+                SaveNotes();
             }
         }
 
@@ -82,6 +86,19 @@ namespace Lab_1.ViewModels
             {
                 await _database.SaveNoteAsync(SelectedNote);
             }
+        }
+
+        private async void SaveNotes()
+        {
+            foreach (var note in Notes)
+            {
+                await _database.SaveNoteAsync(note);
+            }
+        }
+
+        public void RefreshNotes()
+        {
+            LoadNotes();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -94,4 +111,5 @@ namespace Lab_1.ViewModels
             }
         }
     }
+
 }

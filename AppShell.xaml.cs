@@ -8,16 +8,8 @@ namespace Lab_1
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute("mainpage", typeof(MainPage)); // Ensure MainPage is the correct page type
-        }
-
-        private async void OnNoteSelected(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.CurrentSelection.FirstOrDefault() is Note selectedNote)
-            {
-                await Shell.Current.GoToAsync($"mainpage?noteId={selectedNote.Id}");
-            }
+            Routing.RegisterRoute("viewpage", typeof(ViewPage)); // Ensure MainPage is the correct page type
+            Routing.RegisterRoute("allnotes", typeof(AllNotes)); // Register AllNotes route
         }
     }
-
 }
