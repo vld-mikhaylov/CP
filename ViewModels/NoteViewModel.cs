@@ -69,7 +69,10 @@ namespace Lab_1.ViewModels
 
         private void AddNote()
         {
-            var newNote = new Note { Title = "New Note", Content = "Note content" };
+            var newNote = new Note { Title = "New Note", Content = $"Model: {DeviceInfo.Model}\n" +
+                $"Manufacturer: {DeviceInfo.Manufacturer}\n" +
+                $"Platform: {DeviceInfo.Platform}\n" +
+                $"OS Version: {DeviceInfo.VersionString}\n" };
             Notes.Add(newNote);
             SelectedNote = newNote;
             SaveNotes();
